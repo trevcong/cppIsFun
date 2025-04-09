@@ -23,6 +23,9 @@ void calculateChange(float a, float b);
 void runVendingMachine();
 void dispenseItem(int h);
 
+/*
+ * Function to INIT Item dynamic array of vending machine items(float price, string name, int sku, int quantity left)
+ */
 void initVendingMachine() {
     inventory[0] = {1.50, "Soda", 101, 5};
     inventory[1] = {1.00, "Chips", 102, 8};
@@ -35,22 +38,24 @@ void initVendingMachine() {
     inventory[8] = {1.10, "Pretzels", 109, 0};
 }
 
+/*
+ *Function to display items from vending machine.
+ *References GLOBAL struct Item
+ */
 void displayItems() {
-    // Top border and title
     cout << "+-------------------------------+" << endl;
     cout << "|     VENDING MACHINE           |" << endl;
     cout << "+-------------------------------+" << endl;
 
-    // Column headers
     cout << "| SKU | ITEM          | PRICE  |" << endl;
     cout << "+-------------------------------+" << endl;
 
     // Display each item
     for (int i = 0; i < 9; i++) {
-        cout << "| "; // Left border
-        cout << setw(3) << inventory[i].sku << " | "; // SKU (3 chars wide)
-        cout << left << setw(13) << inventory[i].name << " | "; // Name (13 chars wide, left-aligned)
-        cout << "$" << fixed << setprecision(2) << setw(4) << inventory[i].price << " | "; // Price ($X.XX format)
+        cout << "| ";
+        cout << setw(3) << inventory[i].sku << " | ";
+        cout << left << setw(13) << inventory[i].name << " | ";
+        cout << "$" << fixed << setprecision(2) << setw(4) << inventory[i].price << " | ";
 
         // Stock status (outside the main table for simplicity)
         if (inventory[i].qtyLeft > 0) {
@@ -61,16 +66,16 @@ void displayItems() {
         cout << endl;
     }
 
-    // Bottom border and prompt
     cout << "+-------------------------------+" << endl;
     cout << "| Enter SKU to select item:     |" << endl;
     cout << "+-------------------------------+" << endl;
 }
 
-// selectItem Function
-    // Take user input SKU
-    // search array for matching SKU
-    // return the index if found and stock > 0 else return 0
+/*
+ * Function to select ITEM from vending machine
+ * returns -1 if user wants to exit program
+ * return item sku otherwise
+ */
 int selectItem() {
     int sku;
     cout << "What would you like to buy?";
@@ -98,13 +103,21 @@ int selectItem() {
         }
     }
 
-// decrementQty Function
-    // decrement qty of sku
+/*
+ * PARAM: int (sku number)
+ * Function to decrement quantity of item based on if an order is complete
+ */
 void decrementQty(int x) {
     inventory[x].qtyLeft -= 1;
 }
 
-// processPayment Function
+/*
+ * PARAM: int (sku number)
+ * Function to process payment for an order
+ * RETURN false : if user wants to exit
+ * RETURN true : if user has paid in full for item
+ * CALL TO : calculate change
+ */
 bool processPayment(int y) {
     float itemPrice = inventory[y].price;
     float cashInserted = 0;
@@ -142,21 +155,27 @@ bool processPayment(int y) {
 
     }
 
-// calculateChange Function
+/*
+ * PARAM: float ( a = cash inserted, b = item price )
+ * Function to calculate change to be returned to user: Change will be printed
+ */
 void calculateChange(float a, float b) {
     cout << "Your change is: " << a - b << endl;
 }
 
-// dispenseItem Function
+/*
+ * PARAM: int ( sku of item )
+ * Function to dispense item: Prints to user name of item they paid for
+ */
 void dispenseItem(int h) {
     cout << "Dispensing " << inventory[h].name << endl;
     cout << "Thank you for ordering with us!" << endl;
-
 }
 
-
-
-// runVendingMachine Function
+/*
+ * Function to run vending machine
+ * Exits once user want to be done
+ */
 void runVendingMachine() {
     initVendingMachine();
     displayItems();
